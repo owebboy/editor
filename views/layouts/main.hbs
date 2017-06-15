@@ -10,6 +10,9 @@
         font-weight: 500;
         padding: 1em 10%;
       }
+      h1 {
+        font-weight: 500;
+      }
       textarea {
         font-family: Roboto, sans-serif;
         font-size: 1.2em;
@@ -33,10 +36,12 @@
     var textarea = document.querySelector('textarea')
     var h1 = document.querySelector('h1')
     var p = document.querySelector('p')
+    
 
     socket.emit('get', { slug: '{{slug}}' })
     socket.on('get', function(data) {
-      h1.innerText = data.slug
+      console.log(data)
+      h1.innerText = 'editor/' + data.slug
       textarea.value = data.content
     })
     socket.on('err', function(err) {
