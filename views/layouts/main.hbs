@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
+    <title>{{slug}}</title>
+    <style media="screen">
+      html {
+        font-family: Roboto, sans-serif;
+        font-weight: 500;
+        padding: 1em 10%;
+      }
+      textarea {
+        font-family: Roboto, sans-serif;
+        font-size: 1.2em;
+        width: 100%;
+        height: 100vh;
+        border: 0;
+      }
+      textarea:focus {
+        outline: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    {{{body}}}
+  </body>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io()
+    var textarea = document.querySelector('textarea')
+    var h1 = document.querySelector('h1')
+    var p = document.querySelector('p')
+
+    socket.emit('get', { slug: '{{slug}}' })
+    socket.on('get', function(data) {
+      h1.innerText = data.slug
+      textarea.value = data.content
+    })
+    socket.on('err', function(err) {
+      console.error(err);
+    })
+    textarea.addEventListener('input', function() {
+      socket.emit('send', { slug: '{{slug}}', content: textarea.value })
+    })
+  </script>
+
+</html>
